@@ -1,0 +1,13 @@
+Before using or editing this passwords application, note the following:
+
+The hours/certifications spreadsheet's first must have the following cells:
+	In the first column, a cell titled "Name"
+	In the same row as "Name", a cell titled "Lab Hours"
+	In the first column, every member's first and last name in a different cell.
+	In the same column as "Lab Hours", a cell for each member that contains a decimal or integer.
+	Members with zero lab hours must have a 0.0 in their "Lab Hours" cell.
+
+Members' passcodes must be a maximum of 4 digits.
+
+Whenever a member logs in, if they are the first member to log in that day, the rest of the data is cleared.
+Therefore, if a member does not log out before 12:00am, their hours are erased.
