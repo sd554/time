@@ -8,13 +8,13 @@ client = gspread.authorize(creds)
 sheet = client.open('Lab Attendance').sheet1
 sheet2 = client.open('Sample Sheet').sheet1
 
-date = time.strftime("%d/%m/%Y")
+date = time.strftime("%d")
+
 cols = sheet.col_values(1)
 nameFile = open("name.txt","r").readline().strip()
 name = nameFile.split(",")[0]
 mode = nameFile.split(",")[1]
 index = None
-
 if not sheet.cell(2,3).value==date:
         while not sheet.cell(2,2).value=="":
                 sheet.delete_row(2)
@@ -57,16 +57,19 @@ if mode=="out":
                 i+=1
 
 if mode=="in" and not index==None:
-        milliseconds = int(round(time.time()*1000))
-        sheet.insert_row([name,milliseconds],index)
+        milliseconds = int(round(time.time()*1000,2))
+        sheet.insert_row([name,milliseconds,date],index)
 elif not index==None and mode=="out":
         milliseconds = int(round(time.time()*1000))
         previoustime = float(sheet.cell(index,2).value)
-        currenttime = float(sheet2.cell(row,col).value)
-        recordtime = currentime+round((milliseconds-previoustime)/3600000)
+        currenttime = sheet2.cell(row,col).value
+        if currenttime=="":
+            currenttime=0.0
+        else:
+            currenttime=float(currenttime)
+        recordtime = currenttime+round(milliseconds-previoustime,2)/3600000
         if not previoustime=="":
                 sheet.delete_row(index)
-                if recordtime<12:
-                        sheet2.update_cell(row,col,recordtime)
+                sheet2.update_cell(row,col,recordtime)
 
 os.remove("name.txt")
